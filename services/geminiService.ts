@@ -1,7 +1,17 @@
 
-import { GoogleGenAI } from "@google/genai";
+let ai: any | null = null;
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
+async function getClient() {
+  if (ai) return ai;
+  try {
+    const { GoogleGenAI } = await import("@google/genai");
+    ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
+    return ai;
+  } catch (error) {
+    console.error("Failed to initialize Gemini client:", error);
+    return null;
+  }
+}
 
 const SYSTEM_INSTRUCTION = `
 You are the "ARCHANGELLIVING Sensei," a wise and encouraging martial arts instructor. 
@@ -14,7 +24,12 @@ Our dojo teaches a blend of Karate, Brazilian Jiu-Jitsu, and Muay Thai.
 
 export async function getSenseiResponse(message: string, history: { role: 'user' | 'model', parts: { text: string }[] }[]) {
   try {
-    const response = await ai.models.generateContent({
+    const client = await getClient();
+    if (!client) {
+      return "The Sensei cannot connect to the spirit realm right now. Please try again later.";
+    }
+
+    const response = await client.models.generateContent({
       model: 'gemini-3-flash-preview',
       contents: [
         ...history,
