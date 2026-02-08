@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { NAV_ITEMS } from '../constants';
 import { useCart } from '../context/CartContext';
+import logo from '../images/logo.jpeg';
 
 const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -34,8 +35,12 @@ const Navbar: React.FC = () => {
     <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-black/95 backdrop-blur-md py-3 shadow-lg border-b border-red-900/30' : 'bg-transparent py-6'}`}>
       <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
         <a href="#home" onClick={(e) => handleNavClick(e, '#home')} className="flex items-center gap-2 group">
-          <div className="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center group-hover:rotate-180 transition-transform duration-500">
-            <span className="text-white font-bold text-xl">漢</span>
+          <div className="h-10 w-10 rounded-full overflow-hidden bg-black flex items-center justify-center">
+            <img
+              src={logo}
+              alt="Archangel Living Logo"
+              className="h-full w-full object-cover transform scale-150"
+            />
           </div>
           <span className="font-oswald text-2xl font-bold tracking-tighter uppercase">ARCHANGEL<span className="text-red-600">LIVING</span></span>
         </a>
